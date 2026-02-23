@@ -63,9 +63,7 @@ class CensorMachine(NOPFwdMachine):
         
         self.domain_list[b"wikipedia.org", b"npr.org"]
         self.censor_dict={}
-        self.inbound_rules=[
-            self.domain_censor_client,
-        ]
+        self.inbound_rules=[]
         
         self.outbound_rules=[
             self.keyword_censor,
@@ -110,53 +108,23 @@ class CensorMachine(NOPFwdMachine):
                     return self.DROP()
                 
         return pkt
-                
+    
+    #create new RST packets    
     def create_rst(self, pkt):
-        #create new packet
-        tcp_packet = TCP()
-        ip_packet = IP()
 
         old_IP = pkt[IP]
         old_TCP = pkt[TCP]
         
-        #set fields for server packet
-        server_ip=pkt[IP]
-        server_tcp=pkt[TCP]
-        
-        server_tcp.flags = 'RST'
-        
-        server_pkt= server_ip/server_tcp
-
-        #set fields for client packet
-
-        tcp_packet.sport = old_TCP.dport
-        tcp_packet.flags = 'RST'
-        tcp_packet.dport = old_TCP.sport
-        tcp_packet.seq = old_TCP.seq
-        tcp_packet.ack = old_TCP.ack
-
-        ip_packet.src = old_IP.dst
-        ip_packet.dst = old_IP.src
-   
-
-        client_pkt = ip_packet/tcp_packet
+        #set fields for server packet - Scapy uses 'R' not 'RST'
+        client_pkt = IP(src=old_IP.dst, dst= old_IP.src)/TCP(sport=old_TCP.dport, dport=old_TCP.sport, flags='R', seq=old_TCP.ack, ack=old_TCP.seq+len(old_TCP.payload))
+        server_pkt = IP(src=old_IP.src, dst=old_IP.dst)/TCP(sport=old_TCP.sport, dport=old_TCP.sport, flags='R', seq=old_TCP.seq)
+           
 
         return server_pkt, client_pkt
     
-    def recalc_pkt(self,pkt):
-        #delete lengths/checksums so scapy recalculates
-        if pkt.haslayer("IP"):
-                del pkt["IP"].len
-                del pkt["IP"].chksum
-        if pkt.haslayer("TCP"):
-            del pkt["TCP"].chksum
-        return pkt
-    
 
     def domain_censor_server(self, pkt, ctx):
-        
-        pkt=self.recalc_pkt(pkt)
-        
+                
         #create new packets for server/client with RST flags
         server_pkt, client_pkt = self.create_rst(pkt)
         
@@ -166,9 +134,14 @@ class CensorMachine(NOPFwdMachine):
             for url in self.domain_list:
                 if host and url in host:
                     print(f"Attempted access of restricted site{url}")
-                    #send RST to server
-                    return self.FORWARD_REPLACE(server_pkt)
+                    
+                    #can't stack FORWARD_REPLACEx2 and DROP - have to manually inject w/ scapy's send()
+                    #send RST to server - use verbose so you don't print every injection
+                    send(server_pkt, verbose=False)
                     #send RST to client
+                    send(client_pkt, verbose=False)
+                    
+                    return self.DROP()
                     
                     
         #TODO HTTPS
@@ -176,24 +149,7 @@ class CensorMachine(NOPFwdMachine):
         #else dispatcher will forward packet
         return pkt
     
-    def domain_censor_client(self, pkt, ctx):
-        pkt = self.recalc_pkt(pkt)
-        
-        #create new packets for server/client with RST flags
-        server_pkt, client_pkt = self.create_rst(pkt)
-        
-        if pkt.haslayer(HTTPResponse):
-            host =  pkt[HTTPResponse].Host
-            
-            for url in self.domain_list:
-                if host and url in host:
-                    print(f"Attempted access of restricted site{url}")
-                    #send RST to client
-                    return self.FORWARD_REPLACE(client_pkt)                    
-        #TODO HTTPS
-        #elif 
-        #else dispatcher will forward pkt                    
-        return pkt
+
 
 
 
