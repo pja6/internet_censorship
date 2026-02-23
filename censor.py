@@ -1,9 +1,10 @@
 #https://scapy.readthedocs.io/en/latest/advanced_usage/fwdmachine.html
 
 from scapy.all import *
-print("Loaded from:", scapy.__file__)
+#import TLS without multiple layers for handshake and record
+load_layer("tls")
 from scapy.fwdmachine import ForwardMachine
-from scapy.layers.http import HTTP,HTTPRequest,HTTPResponse
+from scapy.layers.http import HTTP,HTTPRequest
 import socket
 import time
 
@@ -117,17 +118,17 @@ class CensorMachine(NOPFwdMachine):
         
         #set fields for server packet - Scapy uses 'R' not 'RST'
         client_pkt = IP(src=old_IP.dst, dst= old_IP.src)/TCP(sport=old_TCP.dport, dport=old_TCP.sport, flags='R', seq=old_TCP.ack, ack=old_TCP.seq+len(old_TCP.payload))
-        server_pkt = IP(src=old_IP.src, dst=old_IP.dst)/TCP(sport=old_TCP.sport, dport=old_TCP.sport, flags='R', seq=old_TCP.seq)
+        server_pkt = IP(src=old_IP.src, dst=old_IP.dst)/TCP(sport=old_TCP.sport, dport=old_TCP.dport, flags='R', seq=old_TCP.seq)
            
 
         return server_pkt, client_pkt
     
 
     def domain_censor_server(self, pkt, ctx):
-                
+        
         #create new packets for server/client with RST flags
         server_pkt, client_pkt = self.create_rst(pkt)
-        
+
         if pkt.haslayer(HTTPRequest):
             host =  pkt[HTTPRequest].Host
             
@@ -141,16 +142,35 @@ class CensorMachine(NOPFwdMachine):
                     #send RST to client
                     send(client_pkt, verbose=False)
                     
+                    self.tuple_ban(pkt,ctx)
+                    
                     return self.DROP()
-                    
-                    
-        #TODO HTTPS
-        #elif 
+                
+        #TLSClientHello signals the start of TLS, catches it before encryption 
+        elif pkt.haslayer(TLSClientHello):
+            #need to update rst pkt w/ SNI info instead of IP
+            client_hello= pkt[tls.TLSClientHello]
+            for ext_type, ext_data in client_hello.extensions:
+                if ext_type == tls.TLSExtensionType.SERVER_NAME:
+                    sni_info=tls.TLSServerName.parse(ext_data)
+            
+            #need to use SNI for domain info       
+            if sni_info:
+                sni=sni_info[0].data.decode("utf-8")
+                for url in self.domain_list:
+                    if host and url in sni:
+                        print(f"Attempted access of restricted site{url}")
+                        send(server_pkt, verbose=False)
+                        send(client_pkt, verbose=False)
+                        
+                        self.tuple_ban(pkt,ctx)
+                        return self.DROP()
+
         #else dispatcher will forward packet
         return pkt
-    
 
 
+    #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
 
 
 
