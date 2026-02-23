@@ -68,7 +68,8 @@ class CensorMachine(NOPFwdMachine):
         
         self.outbound_rules=[
             self.keyword_censor,
-            self.domain_censor_server
+            self.domain_censor_server,
+            self.protocol_censor
             ]
 
     
@@ -128,6 +129,7 @@ class CensorMachine(NOPFwdMachine):
         
         #create new packets for server/client with RST flags
         server_pkt, client_pkt = self.create_rst(pkt)
+        sni_info=[]
 
         if pkt.haslayer(HTTPRequest):
             host =  pkt[HTTPRequest].Host
@@ -158,8 +160,9 @@ class CensorMachine(NOPFwdMachine):
             if sni_info:
                 sni=sni_info[0].data.decode("utf-8")
                 for url in self.domain_list:
-                    if host and url in sni:
+                    if url in sni:
                         print(f"Attempted access of restricted site{url}")
+                        #could make this helper method
                         send(server_pkt, verbose=False)
                         send(client_pkt, verbose=False)
                         
@@ -171,7 +174,18 @@ class CensorMachine(NOPFwdMachine):
 
 
     #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
-
+    def protocol_censor(self, pkt, ctx):
+        if pkt.haslayer(TCP):
+            #using the port instead of protocol is coarse censorship - easier to circumvent later
+            if pkt[TCP].dport==22:
+                print("Attempted connection to restricted service: SSH")
+                
+                self.tuple_ban(pkt,ctx)
+                #connection times out
+                return self.DROP()
+            
+        return pkt
+            
 
 
 
