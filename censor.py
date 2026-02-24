@@ -22,9 +22,16 @@ class CensorMachine():
             self.protocol_censor
             ]
 
+    #convert nfq packet into scapy version
+    def scapy_pkt(self, nfq_pkt):
+        return IP(nfq_pkt.get_payload())
     
+
     #censor list helper method
-    def tuple_ban(self, pkt):
+    def tuple_ban(self, nfq_pkt):
+       
+       pkt = self.scapy_pkt(nfq_pkt)
+
        #tuple logic based on residual censorship paper - broadens censorship after new attempt detected
        #ban that specific tcp flow
        f_tuple=(pkt[IP].src, pkt[TCP].sport, pkt[IP].dst, pkt[TCP].dport)
@@ -45,8 +52,10 @@ class CensorMachine():
            del self.censor_dict[f_tuple]
            
     
-    def keyword_censor(self, pkt):
-       
+    def keyword_censor(self, nfq_pkt):
+
+        pkt = self.scapy_pkt(nfq_pkt)
+
         if pkt.haslayer(HTTPRequest):
             
             http = pkt[HTTPRequest]
@@ -57,12 +66,15 @@ class CensorMachine():
                     
                     self.tuple_ban(pkt)
 
-                    return "DROP"
+                    nfq_pkt.drop()
                 
-        return
+        else:
+            nfq_pkt.accept()
     
     #create new RST packets    
-    def create_rst(self, pkt):
+    def create_rst(self, nfq_pkt):
+
+        pkt=self.scapy_pkt(nfq_pkt)
 
         old_IP = pkt[IP]
         old_TCP = pkt[TCP]
@@ -75,30 +87,17 @@ class CensorMachine():
         return server_pkt, client_pkt
     
 
-    def domain_censor(self, pkt):
+    def domain_censor(self, nfq_pkt):
+
+        pkt=self.scapy_pkt(nfq_pkt)
         
         #create new packets for server/client with RST flags
         server_pkt, client_pkt = self.create_rst(pkt)
         sni_info=[]
 
-        if pkt.haslayer(HTTPRequest):
-            host =  pkt[HTTPRequest].Host
-            
-            for url in self.domain_list:
-                if host and url in host:
-                    print(f"Attempted access of restricted site{url}")
-                    
-                    #send RST to server - use verbose so you don't print every injection
-                    send(server_pkt, verbose=False)
-                    #send RST to client
-                    send(client_pkt, verbose=False)
-                    
-                    self.tuple_ban(pkt)
-                    
-                    return "DROP"
-                
+
         #TLSClientHello signals the start of TLS, catches it before encryption 
-        elif pkt.haslayer(TLSClientHello):
+        if pkt.haslayer(TLSClientHello):
             #need to update rst pkt w/ SNI info instead of IP
             client_hello= pkt[tls.TLSClientHello]
             for ext_type, ext_data in client_hello.extensions:
@@ -116,14 +115,17 @@ class CensorMachine():
                         send(client_pkt, verbose=False)
                         
                         self.tuple_ban(pkt)
-                        return "DROP"
+                        nfq_pkt.drop()
 
-        #else callback will forward packet
-        return
+        #else forward pkt
+        nfq_pkt.accept()
 
 
     #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
-    def protocol_censor(self, pkt):
+    def protocol_censor(self, nfq_pkt):
+
+        pkt = self.scapy_pkt(nfq_pkt)
+
         if pkt.haslayer(TCP):
             #using the port instead of protocol is coarse censorship - easier to circumvent later
             if pkt[TCP].dport==22:
@@ -131,9 +133,9 @@ class CensorMachine():
                 
                 self.tuple_ban(pkt)
                 #connection times out
-                return "DROP"
+                nfq_pkt.drop()
             
-        return
+        nfq_pkt.accept()
     
     def nfq_pipeline(self, q1, q2, q3):
        http_queue = nfq()
