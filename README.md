@@ -23,5 +23,12 @@ Forward machine setup
 3) run bash script
 
 4) run ip table rules for bash script
+    Add listening rules as follow:
+
+    # TPROXY incoming TCP packets on port 80 to vethrelay on port 8080
+    iptables -t mangle -A PREROUTING -p tcp --dport 80 -j TPROXY --tproxy-mark 0x1/0x1 --on-port 8080 --on-ip 2.2.2.2
+
+    # Listen on wlp4s0 for incoming packets on port 80 (on the interface where it really comes from)
+    iptables -A INPUT -i wlp4s0 -p tcp --dport 80 -j ACCEPT
 
 5) run forwarding machine
