@@ -3,59 +3,12 @@
 from scapy.all import *
 #import TLS without multiple layers for handshake and record
 load_layer("tls")
-from scapy.fwdmachine import ForwardMachine
 from scapy.layers.http import HTTP,HTTPRequest
-import socket
+import NetfilterQueue
 import time
 
-class NOPFwdMachine(ForwardMachine):
-    
-    
-    #client-server dispatcher - doesn't handle protocols just checks against egress rules
-    def xfrmcs(self, pkt, ctx):
-      
-        #strategy model pipeline
-        for rule in self.outbound_rules:
-            result = rule( pkt, ctx)
 
-            if isinstance(result, Exception):
-                raise result
-            
-            #ignore if rule returns none
-            if result is not None:
-                pkt = result
-
-        #show final mutate packet - doesn't print for intermediate states
-        if self.debug:
-            pkt.show()  
-
-
-        raise self.FORWARD(pkt)
-
-    
-
-    
-    #server-client dispatcher - doesn't handle protocols just checks against ingress rules
-    def xfrmsc(self, pkt, ctx):
-        #strategy model pipeline
-        for rule in self.inbound_rules:
-            result = rule( pkt, ctx)
-
-            if isinstance(result, Exception):
-                raise result
-            
-            #ignore if rule returns none
-            if result is not None:
-                pkt = result
-
-        #show final mutate packet - doesn't print for intermediate states
-        pkt.show()  
-
-
-        raise self.FORWARD(pkt)
-
-
-class CensorMachine(NOPFwdMachine):
+class CensorMachine():
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.debug = False
@@ -63,10 +16,8 @@ class CensorMachine(NOPFwdMachine):
         self.ban_list=[b"frankenstien", b"httpforeveer"]
         
         self.domain_list=[b"wikipedia.org", b"npr.org"]
-        self.censor_dict={}
-        self.inbound_rules=[]
-        
-        self.outbound_rules=[
+        self.censor_dict={}        
+        self.censor_rules=[
             self.keyword_censor,
             self.domain_censor_server,
             self.protocol_censor
@@ -74,7 +25,7 @@ class CensorMachine(NOPFwdMachine):
 
     
     #censor list helper method
-    def tuple_ban(self, pkt, ctx):
+    def tuple_ban(self, pkt):
        #tuple logic based on residual censorship paper - broadens censorship after new attempt detected
        #ban that specific tcp flow
        f_tuple=(pkt[IP].src, pkt[TCP].sport, pkt[IP].dst, pkt[TCP].dport)
@@ -95,7 +46,7 @@ class CensorMachine(NOPFwdMachine):
            del self.censor_dict[f_tuple]
            
     
-    def keyword_censor(self, pkt, ctx):
+    def keyword_censor(self, pkt):
        
         if pkt.haslayer(HTTPRequest):
             
@@ -107,9 +58,9 @@ class CensorMachine(NOPFwdMachine):
                     
                     self.tuple_ban(pkt, ctx)
 
-                    return self.DROP()
+                    return "DROP"
                 
-        return pkt
+        return
     
     #create new RST packets    
     def create_rst(self, pkt):
@@ -125,10 +76,10 @@ class CensorMachine(NOPFwdMachine):
         return server_pkt, client_pkt
     
 
-    def domain_censor_server(self, pkt, ctx):
+    def domain_censor_server(self, pkt):
         
         #create new packets for server/client with RST flags
-        server_pkt, client_pkt = self.create_rst(pkt, ctx)
+        server_pkt, client_pkt = self.create_rst(pkt)
         sni_info=[]
 
         if pkt.haslayer(HTTPRequest):
@@ -138,15 +89,14 @@ class CensorMachine(NOPFwdMachine):
                 if host and url in host:
                     print(f"Attempted access of restricted site{url}")
                     
-                    #can't stack FORWARD_REPLACEx2 and DROP - have to manually inject w/ scapy's send()
                     #send RST to server - use verbose so you don't print every injection
                     send(server_pkt, verbose=False)
                     #send RST to client
                     send(client_pkt, verbose=False)
                     
-                    self.tuple_ban(pkt,ctx)
+                    self.tuple_ban(pkt)
                     
-                    return self.DROP()
+                    return "DROP"
                 
         #TLSClientHello signals the start of TLS, catches it before encryption 
         elif pkt.haslayer(TLSClientHello):
@@ -166,34 +116,40 @@ class CensorMachine(NOPFwdMachine):
                         send(server_pkt, verbose=False)
                         send(client_pkt, verbose=False)
                         
-                        self.tuple_ban(pkt,ctx)
-                        return self.DROP()
+                        self.tuple_ban(pkt)
+                        return "DROP"
 
-        #else dispatcher will forward packet
-        return pkt
+        #else callback will forward packet
+        return
 
 
     #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
-    def protocol_censor(self, pkt, ctx):
+    def protocol_censor(self, pkt):
         if pkt.haslayer(TCP):
             #using the port instead of protocol is coarse censorship - easier to circumvent later
             if pkt[TCP].dport==22:
                 print("Attempted connection to restricted service: SSH")
                 
-                self.tuple_ban(pkt,ctx)
+                self.tuple_ban(pkt)
                 #connection times out
-                return self.DROP()
+                return "DROP"
             
-        return pkt
+        return
+    
+    def pipeline_callback(self, pkt):
+        for rule in self.censor_rules:
+            result = rule(pkt)
+
+            if result == "DROP":
+                #interact w/ nfqueue for dropping.
+                nfqueue_packet.drop()
+            return
+    nfqueue_packet.accept()
+
+
+        
             
-
-
-
-# run forwarding machine
-# current setup - ip table rules route both port 80 and 443 traffic through 8080 - have to handle both
-CensorMachine(
-    mode=ForwardMachine.MODE.TPROXY,
-    port=8080,
-    cls=HTTP,
-    af=socket.AF_INET
-).run()
+def main():
+    censor=CensorMachine()
+    sniffer=AsyncSniffer(iface=None, prn=censor.pipeline_callback)
+    sniffer.start()
