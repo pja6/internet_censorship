@@ -112,14 +112,19 @@ class CensorMachine(NOPFwdMachine):
         return pkt
     
     #create new RST packets    
-    def create_rst(self, pkt):
-
-        old_IP = pkt[IP]
-        old_TCP = pkt[TCP]
+    def create_rst(self, pkt, ctx):
+      
+        pkt.show()
+        print(type(pkt))
+        print(dir(ctx))
+        print(ctx.__dict__)
+        #old_IP = pkt[IP]
+        #old_TCP = pkt[TCP]
         
         #set fields for server packet - Scapy uses 'R' not 'RST'
-        client_pkt = IP(src=old_IP.dst, dst= old_IP.src)/TCP(sport=old_TCP.dport, dport=old_TCP.sport, flags='R', seq=old_TCP.ack, ack=old_TCP.seq+len(old_TCP.payload))
-        server_pkt = IP(src=old_IP.src, dst=old_IP.dst)/TCP(sport=old_TCP.sport, dport=old_TCP.dport, flags='R', seq=old_TCP.seq)
+        #FWDMachine does TCP reassembly - not giving actual pkt in pkt, all this info is in ctx
+        client_pkt = IP(src=ctx.dest[0], dst= ctx.addr[0])/TCP(sport=ctx.dport, dport=ctx.sport, flags='R', seq=ctx.ack, ack=ctx.seq+len(ctx.payload))
+        server_pkt = IP(src=ctx.addr[0], dst=ctx.dest[0])/TCP(sport=ctx.sport, dport=ctx.dport, flags='R', seq=ctx.seq)
            
 
         return server_pkt, client_pkt
