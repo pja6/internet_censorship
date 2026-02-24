@@ -1,6 +1,15 @@
 #!/bin/bash
 
-#create table 
+#create alice_routing table
+#sudo nft add table nat 2>/dev/null
+
+#add chain to alice_routing table and masquerade rule
+#sudo nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; } 2>/dev/null
+#sudo nft add rule ip nat POSTROUTING oifname "enp0s8" masquerade 2>/dev/null
+
+
+
+#create censor table 
 # 2>/dev/null silences error if table already exists - run repeatedly w/o failing
 sudo nft add table inet censor_table 2>/dev/null
 
