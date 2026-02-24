@@ -1,10 +1,9 @@
-#https://scapy.readthedocs.io/en/latest/advanced_usage/fwdmachine.html
 
 from scapy.all import *
 #import TLS without multiple layers for handshake and record
 load_layer("tls")
 from scapy.layers.http import HTTP,HTTPRequest
-import NetfilterQueue
+import NetfilterQueue as nfq
 import time
 
 
@@ -19,7 +18,7 @@ class CensorMachine():
         self.censor_dict={}        
         self.censor_rules=[
             self.keyword_censor,
-            self.domain_censor_server,
+            self.domain_censor,
             self.protocol_censor
             ]
 
@@ -56,7 +55,7 @@ class CensorMachine():
                 if keyword in http.Path:
                     print(f"Keyword: {keyword} recognized - ")
                     
-                    self.tuple_ban(pkt, ctx)
+                    self.tuple_ban(pkt)
 
                     return "DROP"
                 
@@ -76,7 +75,7 @@ class CensorMachine():
         return server_pkt, client_pkt
     
 
-    def domain_censor_server(self, pkt):
+    def domain_censor(self, pkt):
         
         #create new packets for server/client with RST flags
         server_pkt, client_pkt = self.create_rst(pkt)
@@ -136,20 +135,35 @@ class CensorMachine():
             
         return
     
-    def pipeline_callback(self, pkt):
-        for rule in self.censor_rules:
-            result = rule(pkt)
+    def nfq_pipeline(self, q1, q2, q3):
+       http_queue = nfq()
+       https_queue = nfq()
+       ssh_queue = nfq()
 
-            if result == "DROP":
-                #interact w/ nfqueue for dropping.
-                nfqueue_packet.drop()
-            return
-    nfqueue_packet.accept()
+    
+       http_queue.bind(q1, self.keyword_censor)
+       https_queue.bind(q2, self.domain_censor)
+       ssh_queue.bind(q3, self.protocol_censor)
+
+       try:
+           http_queue.run()
+           https_queue.run()
+           ssh_queue.run()
+       except KeyboardInterrupt:
+           nfq.unbind()
+           
 
 
         
             
 def main():
     censor=CensorMachine()
-    sniffer=AsyncSniffer(iface=None, prn=censor.pipeline_callback)
-    sniffer.start()
+
+    #useful for logging but not routing
+    #sniffer=AsyncSniffer(iface=None, prn=censor.pipeline_callback)
+    #sniffer.start()
+
+    censor.nfq_pipeline(1,2,3)
+
+if __name__ == "__main__":
+    main()

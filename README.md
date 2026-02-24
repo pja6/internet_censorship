@@ -11,13 +11,13 @@ VM/NFQ Set-Up
     `sudo nft 'add chain ip nat POSTROUTING { type nat hook postrouting priority 100; }'`    
     `sudo nft add rule ip nat POSTROUTING oifname "enp0s8" masquerade`
 
-2) run NFQ rules: `sudo bash start_nfq.sh`
+2) run nftables rules: `sudo bash start_nfq.sh`
 
-- to install:
-    - sudo apt install build-essential python3-dev \
-                 libnetfilter-queue-dev \
-                 libnfnetlink-dev
-    - sudo .venv/bin/pip3 install NetfilterQueue
+- to install nfq:
+    - `sudo apt install build-essential python3-dev \`
+                 `libnetfilter-queue-dev \`
+                 `libnfnetlink-dev`
+    - `sudo .venv/bin/pip3 install NetfilterQueue`
 
 3) Start censor.py
 
