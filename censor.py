@@ -62,7 +62,7 @@ class CensorMachine(NOPFwdMachine):
         #http.path stored in bytes
         self.ban_list=[b"frankenstien", b"httpforeveer"]
         
-        self.domain_list[b"wikipedia.org", b"npr.org"]
+        self.domain_list=[b"wikipedia.org", b"npr.org"]
         self.censor_dict={}
         self.inbound_rules=[]
         
