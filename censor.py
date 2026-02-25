@@ -113,17 +113,16 @@ class CensorMachine():
         
         pkt=self.scapy_pkt(nfq_pkt)
         if pkt.haslayer(TCP):
-           
+            tls_layer = pkt[TLS]
+            for msg in tls_layer.msg:
+                 if isinstance(msg, TLSClientHello):
+                    print("here: clienthello")
             #scapy's current way to work with TLS
             #TLSClientHello signals the start of TLS, catches it before encryption 
-            if pkt.haslayer(TLS) and pkt[TLS].haslayer(TLSClientHello):
-
-                #need to update rst pkt w/ SNI info instead of IP
-                client_hello= pkt[TLS][TLSClientHello]
-                print("here client hello")
-                for ext_type in client_hello.ext:
+                
+                 for ext_type in msg.ext:
                     if isinstance(ext_type, TLSExtServerName): 
-                        #need to use SNI for domain info       
+                            #need to use SNI for domain info       
                         self.sni=ext_type.servernames[0].servername.decode('utf-8')
                         print("here sni")
                         print(f"sni:{self.sni}")
@@ -136,10 +135,10 @@ class CensorMachine():
                                 #could make this helper method
                                 send(server_pkt, verbose=False)
                                 send(client_pkt, verbose=False)
-                                
-                                self.tuple_ban(pkt)
-                                nfq_pkt.drop()
-                                return
+                            
+                            self.tuple_ban(pkt)
+                            nfq_pkt.drop()
+                            return
                             
             print(f"Allowed site {self.sni} request: forwarded")
             #else forward pkt
