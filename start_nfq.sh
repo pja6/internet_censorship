@@ -22,7 +22,7 @@ sudo nft add chain inet censor_table ssh_out { type filter hook output priority 
 echo "fwd_ports chain added to table"
 
 #add specific rule to chain w/ associated nfq number
-#sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
+sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
 sudo nft add rule inet censor_table fwd_ports udp dport 53 queue num 2
 sudo nft add rule inet censor_table fwd_ports ip protocol tcp tcp dport 53 queue num 2
 #force tcp - block QUIC (UDP 443)
