@@ -39,13 +39,24 @@ class CensorMachine():
        t_tuple=(pkt[IP].src, pkt[IP].dst, pkt[TCP].dport)
        curr_time=time.time()
        
+       # add 4 tuple to censor list if not already in it
        if f_tuple not in self.censor_dict:
            self.censor_dict[f_tuple]=curr_time
+           print(f"4-tuple {f_tuple} added to censor list")
+        # if 3 tuple not in list and 4 tuple time limit not done, add 3 tuple to list and reset time
        elif t_tuple not in self.censor_dict and curr_time-self.censor_dict[f_tuple] >180.0:
+           print(f"new attempt made before time limit expired")
            self.censor_dict[f_tuple]= curr_time
+           print(f"3-tuple {t_tuple} added to censor list")
+
            self.censor_dict[t_tuple] = curr_time
+           print(f"4-tuple {f_tuple} timer reset")
+
+        # if 3 tuple in list and time limit not reached, reset timer
        elif t_tuple in self.censor_dict and curr_time - self.censor_dict[t_tuple] > 180.0:
+            print(f"3 tuple timer reset - timer not expired")
             self.censor_dict[t_tuple]= curr_time
+        #timers complete - delete tuple from list
        else:
            if t_tuple in self.censor_dict:
                del self.censor_dict[t_tuple]
@@ -62,7 +73,7 @@ class CensorMachine():
             
             for keyword in self.ban_list:
                 if keyword in http.Path:
-                    print(f"Keyword: {keyword} recognized - ")
+                    print(f"Keyword: {keyword} recognized - packet dropped")
                     
                     self.tuple_ban(pkt)
 
@@ -149,8 +160,8 @@ class CensorMachine():
 
        try:
            http_queue.run()
-           https_queue.run()
-           ssh_queue.run()
+           #https_queue.run()
+           #ssh_queue.run()
        except KeyboardInterrupt:
            nfq.unbind()
            

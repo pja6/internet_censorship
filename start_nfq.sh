@@ -20,13 +20,15 @@ echo "fwd_ports chain added to table"
 
 #add specific rule to chain w/ associated nfq number
 sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
-sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 443 queue num 2
-sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 22 queue num 3
+#sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 443 queue num 2
+#sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 22 queue num 3
 echo "rules added to chain"
 
 #monitor counter
 sudo nft -a list chain inet censor_table fwd_ports
-echo "monitoring incoming packets"
+echo "monitoring incoming packets w/"
+echo "sudo nft -a list chain inet censor_table fwd_ports"
 
 #tear down - delete chain
-#sudo nft delete chain inet censor_table fwd_ports
+echo " Delete table w/:"
+echo "sudo nft delete chain inet censor_table fwd_ports"
