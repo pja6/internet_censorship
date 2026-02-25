@@ -2,9 +2,9 @@
 from scapy.all import *
 #import TLS without multiple layers for handshake and record
 from scapy.layers.tls.all import *
-from scapy.layers.http import HTTP,HTTPRequest
 from netfilterqueue import NetfilterQueue as nfq
 import time
+import threading
 
 
 class CensorMachine():
@@ -155,20 +155,31 @@ class CensorMachine():
     def nfq_pipeline(self, q1, q2, q3):
        print("here: pipeline")
        http_queue = nfq()
-       https_queue = nfq()
+       dns_queue = nfq()
        ssh_queue = nfq()
 
     
        http_queue.bind(q1, self.keyword_censor)
-       https_queue.bind(q2, self.dns_censor)
+       dns_queue.bind(q2, self.dns_censor)
        ssh_queue.bind(q3, self.protocol_censor)
+       
+       threads = [
+           threading.Thread(target=http_queue.run),
+           threading.Thread(target=dns_queue.run),
+           threading.Thread(target=ssh_queue.run)
+       ]
 
        try:
-           #http_queue.run()
-           https_queue.run()
-           #ssh_queue.run()
+           for t in threads:
+               t.daemon=True
+               t.start()
+           for t in threads:
+               t.join()
+           
        except KeyboardInterrupt:
-           nfq.unbind(https_queue)
+           http_queue.unbind()
+           dns_queue.unbind()
+           ssh_queue.unbind()
            
     def log_packet(self, packet):
         print(packet.summary())
