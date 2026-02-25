@@ -13,7 +13,7 @@ class CensorMachine():
         self.debug = False
         #http.path stored in bytes
         self.ban_list=["frankenstien", "httpforever"]
-        
+        self.sni=""
         self.domain_list=["wikipedia.org", "npr.org"]
         self.censor_dict={}        
         self.censor_rules=[
@@ -111,25 +111,29 @@ class CensorMachine():
         
         pkt=self.scapy_pkt(nfq_pkt)
         if pkt.haslayer(TCP):
-            #create new packets for server/client with RST flags
-            server_pkt, client_pkt = self.create_rst(pkt)
-            
+
+            #force scapy to decode TLS layer
+            if pkt[TCP].dport == 443:
+                pkt=TLS(pkt)
+           
             #scapy's current way to work with TLS
             #TLSClientHello signals the start of TLS, catches it before encryption 
             if pkt.haslayer(TLS) and pkt[TLS].haslayer(TLSClientHello):
 
                 #need to update rst pkt w/ SNI info instead of IP
                 client_hello= pkt[TLS][TLSClientHello]
-                
+                print("here client hello")
                 for ext_type in client_hello.ext:
                     if isinstance(ext_type, TLSExtServerName): 
                         #need to use SNI for domain info       
-                        sni=ext_type.servernames[0].servername.decode('utf-8')
-                
+                        self.sni=ext_type.servernames[0].servername.decode('utf-8')
+                        print("here sni")
+                        print(f"sni:{self.sni}")
                         for url in self.domain_list:
-                            if url in sni:
+                            if url in self.sni:
                                 print(f"Attempted access of restricted site{url}")
-
+                                #create new packets for server/client with RST flags
+                                server_pkt, client_pkt = self.create_rst(pkt)
                                 print("reset sent")
                                 #could make this helper method
                                 send(server_pkt, verbose=False)
@@ -138,9 +142,8 @@ class CensorMachine():
                                 self.tuple_ban(pkt)
                                 nfq_pkt.drop()
                                 return
-                    
-
-            print("Allowed site request: forwarded")
+                            
+            print(f"Allowed site {self.sni} request: forwarded")
             #else forward pkt
             nfq_pkt.accept()
 
@@ -175,10 +178,10 @@ class CensorMachine():
 
        try:
            #http_queue.run()
-           #https_queue.run()
-           ssh_queue.run()
+           https_queue.run()
+           #ssh_queue.run()
        except KeyboardInterrupt:
-           nfq.unbind(ssh_queue)
+           nfq.unbind(https_queue)
            
     def log_packet(self, packet):
         print(packet.summary())
