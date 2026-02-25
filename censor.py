@@ -21,8 +21,6 @@ class CensorMachine():
             self.domain_censor,
             self.protocol_censor
             ]
-        bind_layers(TCP, TLS, dport=443)
-        bind_layers(TCP, TLS, sport=443)
 
     #convert nfq packet into scapy version
     def scapy_pkt(self, nfq_pkt):
@@ -109,40 +107,28 @@ class CensorMachine():
         return server_pkt, client_pkt
     
 
-    def domain_censor(self, nfq_pkt):
+    def dns_censor(self, nfq_pkt):
         
         pkt=self.scapy_pkt(nfq_pkt)
-        if pkt.haslayer(TCP):
-            tls_layer = pkt[TLS]
-            for msg in tls_layer.msg:
-                 if isinstance(msg, TLSClientHello):
-                    print("here: clienthello")
-            #scapy's current way to work with TLS
-            #TLSClientHello signals the start of TLS, catches it before encryption 
+        #qr==0 means query
+        if pkt.haslayer(DNS) and pkt[DNS].qr == 0:
+            print(pkt[DNS])
+            #rstrip for the extra ...
+            query = pkt[DNSQR].qname.decode('utf-8').rstrip('.')
+            print(f"DNS query: {query}")
+            
+            for url in self.domain_list:
+                if url in query:
+                    print(f"Attempted access of restricted site{url}")
+                    #DNS layer too early to use resets
                 
-                 for ext_type in msg.ext:
-                    if isinstance(ext_type, TLSExtServerName): 
-                            #need to use SNI for domain info       
-                        self.sni=ext_type.servernames[0].servername.decode('utf-8')
-                        print("here sni")
-                        print(f"sni:{self.sni}")
-                        for url in self.domain_list:
-                            if url in self.sni:
-                                print(f"Attempted access of restricted site{url}")
-                                #create new packets for server/client with RST flags
-                                server_pkt, client_pkt = self.create_rst(pkt)
-                                print("reset sent")
-                                #could make this helper method
-                                send(server_pkt, verbose=False)
-                                send(client_pkt, verbose=False)
+                    self.tuple_ban(pkt)
+                    nfq_pkt.drop()
+                    return
                             
-                            self.tuple_ban(pkt)
-                            nfq_pkt.drop()
-                            return
-                            
-            print(f"Allowed site {self.sni} request: forwarded")
-            #else forward pkt
-            nfq_pkt.accept()
+        print(f"Allowed site {self.sni} request: forwarded")
+        #else forward pkt
+        nfq_pkt.accept()
 
 
     #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
@@ -156,7 +142,11 @@ class CensorMachine():
                 print("Attempted connection to restricted service: SSH")
                 
                 self.tuple_ban(pkt)
-                #connection times out
+                server_pkt, client_pkt = self.create_rst(pkt)
+                print("reset sent")
+                #could make this helper method
+                send(server_pkt, verbose=False)
+                send(client_pkt, verbose=False)
                 nfq_pkt.drop()
                 return
             

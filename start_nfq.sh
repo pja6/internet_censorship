@@ -23,7 +23,7 @@ echo "fwd_ports chain added to table"
 
 #add specific rule to chain w/ associated nfq number
 #sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
-sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 443 queue num 2
+sudo nft add rule inet censor_table fwd_ports udp dport 53 queue num 2
 #force tcp - block QUIC (UDP 443)
 sudo nft add rule inet censor_table fwd_ports udp dport 443 drop
 sudo nft add rule inet censor_table ssh_in ip protocol tcp counter tcp dport 22 queue num 3
