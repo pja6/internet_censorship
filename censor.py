@@ -1,7 +1,7 @@
 
 from scapy.all import *
 #import TLS without multiple layers for handshake and record
-load_layer("tls")
+from scapy.layers.tls.all import *
 from scapy.layers.http import HTTP,HTTPRequest
 from netfilterqueue import NetfilterQueue as nfq
 import time
@@ -14,7 +14,7 @@ class CensorMachine():
         #http.path stored in bytes
         self.ban_list=["frankenstien", "httpforever"]
         
-        self.domain_list=[b"wikipedia.org", b"npr.org"]
+        self.domain_list=["wikipedia.org", "npr.org"]
         self.censor_dict={}        
         self.censor_rules=[
             self.keyword_censor,
@@ -113,34 +113,32 @@ class CensorMachine():
         if pkt.haslayer(TCP):
             #create new packets for server/client with RST flags
             server_pkt, client_pkt = self.create_rst(pkt)
-            sni_info=[]
-
-
+            
+            #scapy's current way to work with TLS
             #TLSClientHello signals the start of TLS, catches it before encryption 
-            if pkt.haslayer(TLSClientHello):
-                #need to update rst pkt w/ SNI info instead of IP
-                client_hello= pkt[tls.TLSClientHello]
-                for ext_type, ext_data in client_hello.extensions:
-                    if ext_type == tls.TLSExtensionType.SERVER_NAME:
-                        sni_info=tls.TLSServerName.parse(ext_data)
-                
-                #need to use SNI for domain info       
-                if sni_info:
-                    sni=sni_info[0].data.decode("utf-8")
-                    for url in self.domain_list:
-                        if url in sni:
-                            print(f"Attempted access of restricted site{url}")
+            if pkt.haslayer(TLS) and pkt[TLS].haslayer(TLSClientHello):
 
-                            print("reset sent")
-                            #could make this helper method
-                            send(server_pkt, verbose=False)
-                            send(client_pkt, verbose=False)
-                            
-                            self.tuple_ban(pkt)
-                            nfq_pkt.drop()
-                            return
-                print("Allowed site request: forwarded")
-                nfq_pkt.accept()
+                #need to update rst pkt w/ SNI info instead of IP
+                client_hello= pkt[TLS][TLSClientHello]
+                
+                for ext_type in client_hello.ext:
+                    if isinstance(ext_type, TLSExtServerName): 
+                        #need to use SNI for domain info       
+                        sni=ext_type.servernames[0].servername.decode('utf-8')
+                
+                        for url in self.domain_list:
+                            if url in sni:
+                                print(f"Attempted access of restricted site{url}")
+
+                                print("reset sent")
+                                #could make this helper method
+                                send(server_pkt, verbose=False)
+                                send(client_pkt, verbose=False)
+                                
+                                self.tuple_ban(pkt)
+                                nfq_pkt.drop()
+                                return
+                    
 
             print("Allowed site request: forwarded")
             #else forward pkt
