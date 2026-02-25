@@ -3,12 +3,13 @@ lab7 - implement 3 types of censorship
 
 
 VM/NFQ Set-Up
+0) set port forwarding: `sudo sysctl -w net.ipv4.ip_forward=1`
 
 1) set up alice ip table rules (now included in set-up script)
  
     `sudo nft add table nat`
 
-    `sudo nft 'add chain ip nat POSTROUTING { type nat hook postrouting priority 100; }`    
+    `sudo nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; }`    
     `sudo nft add rule ip nat POSTROUTING oifname "enp0s8" masquerade`
 
 2) run nftables rules: `sudo bash start_nfq.sh`
