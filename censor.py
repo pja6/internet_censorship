@@ -121,8 +121,8 @@ class CensorMachine():
                 if url in query:
                     print(f"Attempted access of restricted site{url}")
                     #DNS layer too early to use resets
-                
-                    self.tuple_ban(pkt)
+                    #no tcp connection and dns uses ephemeral ports so would never escalate
+                    #self.tuple_ban(pkt)
                     nfq_pkt.drop()
                     return
                             
