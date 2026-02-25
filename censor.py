@@ -3,7 +3,7 @@ from scapy.all import *
 #import TLS without multiple layers for handshake and record
 load_layer("tls")
 from scapy.layers.http import HTTP,HTTPRequest
-import NetfilterQueue as nfq
+from netfilterqueue import NetfilterQueue as nfq
 import time
 
 
@@ -12,7 +12,7 @@ class CensorMachine():
         super().__init__(**kwargs)
         self.debug = False
         #http.path stored in bytes
-        self.ban_list=[b"frankenstien", b"httpforeveer"]
+        self.ban_list=["frankenstien", "httpforever"]
         
         self.domain_list=[b"wikipedia.org", b"npr.org"]
         self.censor_dict={}        
@@ -24,13 +24,13 @@ class CensorMachine():
 
     #convert nfq packet into scapy version
     def scapy_pkt(self, nfq_pkt):
+        print("here: scapy")
         return IP(nfq_pkt.get_payload())
     
 
     #censor list helper method
-    def tuple_ban(self, nfq_pkt):
-       
-       pkt = self.scapy_pkt(nfq_pkt)
+    def tuple_ban(self, pkt):
+       print("here: ban")
 
        #tuple logic based on residual censorship paper - broadens censorship after new attempt detected
        #ban that specific tcp flow
@@ -64,26 +64,37 @@ class CensorMachine():
            
     
     def keyword_censor(self, nfq_pkt):
-
+        print("here: keyword")
         pkt = self.scapy_pkt(nfq_pkt)
 
-        if pkt.haslayer(HTTPRequest):
+        #be more specific - otherwise only accepts packets that aren't HTTP and holds the rest
+        if pkt.haslayer(TCP):
             
-            http = pkt[HTTPRequest]
-            
-            for keyword in self.ban_list:
-                if keyword in http.Path:
-                    print(f"Keyword: {keyword} recognized - packet dropped")
-                    
-                    self.tuple_ban(pkt)
-
-                    nfq_pkt.drop()
+            raw = bytes(pkt[TCP].payload)
+            if raw:
+                #ignore if not valid utf-8
+                decoded_raw = raw.decode(errors='ignore')
                 
+                #if banned keyword in raw data - drop it
+                for keyword in self.ban_list:
+                    if keyword in decoded_raw:
+                        print(f"Keyword: {keyword} recognized - packet dropped")
+                        
+                        self.tuple_ban(pkt)
+
+                        nfq_pkt.drop()
+                        return
+                    
+            print("Permissible packet: forwarded")
+            nfq_pkt.accept()
+                    
         else:
+            print("Permissible packet: forwarded")
             nfq_pkt.accept()
     
     #create new RST packets    
     def create_rst(self, nfq_pkt):
+        print("here: rst")
 
         pkt=self.scapy_pkt(nfq_pkt)
 
@@ -149,23 +160,25 @@ class CensorMachine():
         nfq_pkt.accept()
     
     def nfq_pipeline(self, q1, q2, q3):
+       print("here: pipeline")
        http_queue = nfq()
        https_queue = nfq()
        ssh_queue = nfq()
 
     
        http_queue.bind(q1, self.keyword_censor)
-       https_queue.bind(q2, self.domain_censor)
-       ssh_queue.bind(q3, self.protocol_censor)
+       #https_queue.bind(q2, self.domain_censor)
+       #ssh_queue.bind(q3, self.protocol_censor)
 
        try:
            http_queue.run()
            #https_queue.run()
            #ssh_queue.run()
        except KeyboardInterrupt:
-           nfq.unbind()
+           nfq.unbind(http_queue)
            
-
+    def log_packet(self, packet):
+        print(packet.summary())
 
         
             
@@ -173,8 +186,8 @@ def main():
     censor=CensorMachine()
 
     #useful for logging but not routing
-    #sniffer=AsyncSniffer(iface=None, prn=censor.pipeline_callback)
-    #sniffer.start()
+    sniffer=AsyncSniffer(iface="enp0s3", prn=censor.log_packet)
+    sniffer.start()
 
     censor.nfq_pipeline(1,2,3)
 
