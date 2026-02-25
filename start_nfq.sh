@@ -16,12 +16,16 @@ echo "censor_table created"
 
 #add chain fwd_ports to table - {type = filter | hook = forward | priority = 0 (neutral)}
 sudo nft add chain inet censor_table fwd_ports { type filter hook forward priority 0 \;} 2>/dev/null
+sudo nft add chain inet censor_table ssh_in { type filter hook input priority 0 \;} 2>/dev/null
+sudo nft add chain inet censor_table ssh_out { type filter hook output priority 0 \;} 2>/dev/null
+
 echo "fwd_ports chain added to table"
 
 #add specific rule to chain w/ associated nfq number
-sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
+#sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 80 queue num 1
 #sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 443 queue num 2
-#sudo nft add rule inet censor_table fwd_ports ip protocol tcp counter tcp dport 22 queue num 3
+sudo nft add rule inet censor_table ssh_in ip protocol tcp counter tcp dport 22 queue num 3
+sudo nft add rule inet censor_table ssh_out ip protocol tcp tcp sport 22 queue num 3
 echo "rules added to chain"
 
 #monitor counter

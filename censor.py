@@ -93,10 +93,8 @@ class CensorMachine():
             nfq_pkt.accept()
     
     #create new RST packets    
-    def create_rst(self, nfq_pkt):
+    def create_rst(self, pkt):
         print("here: rst")
-
-        pkt=self.scapy_pkt(nfq_pkt)
 
         old_IP = pkt[IP]
         old_TCP = pkt[TCP]
@@ -110,52 +108,59 @@ class CensorMachine():
     
 
     def domain_censor(self, nfq_pkt):
-
-        pkt=self.scapy_pkt(nfq_pkt)
         
-        #create new packets for server/client with RST flags
-        server_pkt, client_pkt = self.create_rst(pkt)
-        sni_info=[]
+        pkt=self.scapy_pkt(nfq_pkt)
+        if pkt.haslayer(TCP):
+            #create new packets for server/client with RST flags
+            server_pkt, client_pkt = self.create_rst(pkt)
+            sni_info=[]
 
 
-        #TLSClientHello signals the start of TLS, catches it before encryption 
-        if pkt.haslayer(TLSClientHello):
-            #need to update rst pkt w/ SNI info instead of IP
-            client_hello= pkt[tls.TLSClientHello]
-            for ext_type, ext_data in client_hello.extensions:
-                if ext_type == tls.TLSExtensionType.SERVER_NAME:
-                    sni_info=tls.TLSServerName.parse(ext_data)
-            
-            #need to use SNI for domain info       
-            if sni_info:
-                sni=sni_info[0].data.decode("utf-8")
-                for url in self.domain_list:
-                    if url in sni:
-                        print(f"Attempted access of restricted site{url}")
-                        #could make this helper method
-                        send(server_pkt, verbose=False)
-                        send(client_pkt, verbose=False)
-                        
-                        self.tuple_ban(pkt)
-                        nfq_pkt.drop()
+            #TLSClientHello signals the start of TLS, catches it before encryption 
+            if pkt.haslayer(TLSClientHello):
+                #need to update rst pkt w/ SNI info instead of IP
+                client_hello= pkt[tls.TLSClientHello]
+                for ext_type, ext_data in client_hello.extensions:
+                    if ext_type == tls.TLSExtensionType.SERVER_NAME:
+                        sni_info=tls.TLSServerName.parse(ext_data)
+                
+                #need to use SNI for domain info       
+                if sni_info:
+                    sni=sni_info[0].data.decode("utf-8")
+                    for url in self.domain_list:
+                        if url in sni:
+                            print(f"Attempted access of restricted site{url}")
 
-        #else forward pkt
-        nfq_pkt.accept()
+                            print("reset sent")
+                            #could make this helper method
+                            send(server_pkt, verbose=False)
+                            send(client_pkt, verbose=False)
+                            
+                            self.tuple_ban(pkt)
+                            nfq_pkt.drop()
+                            return
+                print("Allowed site request: forwarded")
+                nfq_pkt.accept()
+
+            print("Allowed site request: forwarded")
+            #else forward pkt
+            nfq_pkt.accept()
 
 
     #Use protocol to block SSH instead of trying to block smtp email - specific test/less work?
     def protocol_censor(self, nfq_pkt):
-
+        print ("here: protocol")
         pkt = self.scapy_pkt(nfq_pkt)
 
         if pkt.haslayer(TCP):
             #using the port instead of protocol is coarse censorship - easier to circumvent later
-            if pkt[TCP].dport==22:
+            if pkt[TCP].dport==22 or pkt[TCP].sport == 22: 
                 print("Attempted connection to restricted service: SSH")
                 
                 self.tuple_ban(pkt)
                 #connection times out
                 nfq_pkt.drop()
+                return
             
         nfq_pkt.accept()
     
@@ -167,15 +172,15 @@ class CensorMachine():
 
     
        http_queue.bind(q1, self.keyword_censor)
-       #https_queue.bind(q2, self.domain_censor)
-       #ssh_queue.bind(q3, self.protocol_censor)
+       https_queue.bind(q2, self.domain_censor)
+       ssh_queue.bind(q3, self.protocol_censor)
 
        try:
-           http_queue.run()
+           #http_queue.run()
            #https_queue.run()
-           #ssh_queue.run()
+           ssh_queue.run()
        except KeyboardInterrupt:
-           nfq.unbind(http_queue)
+           nfq.unbind(ssh_queue)
            
     def log_packet(self, packet):
         print(packet.summary())
