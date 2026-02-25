@@ -21,6 +21,8 @@ class CensorMachine():
             self.domain_censor,
             self.protocol_censor
             ]
+        bind_layers(TCP, TLS, dport=443)
+        bind_layers(TCP, TLS, sport=443)
 
     #convert nfq packet into scapy version
     def scapy_pkt(self, nfq_pkt):
@@ -111,10 +113,6 @@ class CensorMachine():
         
         pkt=self.scapy_pkt(nfq_pkt)
         if pkt.haslayer(TCP):
-
-            #force scapy to decode TLS layer
-            if pkt[TCP].dport == 443:
-                pkt=TLS(pkt)
            
             #scapy's current way to work with TLS
             #TLSClientHello signals the start of TLS, catches it before encryption 
