@@ -1,0 +1,381 @@
+DNS query: www.gstatic.com
+Allowed site  request: forwarded
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / UDP / DNS Ans 142.251.33.195
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / SSLv2 / SSLv2 Handshake - Client Finished
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / SSLv2 / SSLv2 Handshake - Server Verify
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:54142 > 142.251.46.74:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:54142 > 142.251.46.74:443 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 142.251.46.74:https > 192.168.56.101:54142 A
+Ether / IP / TCP 142.251.46.74:https > 192.168.56.101:54142 A
+Ether / IP / TCP / TLS 142.251.46.74:443 > 192.168.56.101:54142 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 142.251.46.74:443 > 192.168.56.101:54142 / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:54142 > 142.251.46.74:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:54142 > 142.251.46.74:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:54142 > 142.251.46.74:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.251.46.74:https > 192.168.56.101:54142 A
+Ether / IP / TCP 142.251.46.74:https > 192.168.56.101:54142 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:48888 > 142.250.73.132:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+Ether / IP / TCP / TLS 142.250.73.132:443 > 192.168.56.101:48888 / TLS / TLS Application Data / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:48888 > 142.250.73.132:443 / TLS / TLS Application Data
+Ether / IP / TCP 142.250.73.132:https > 192.168.56.101:48888 A
+here: scapy
+DNS Qry b'www.wikipedia.org.'
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+here: scapy
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A / Padding
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / Padding
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / Padding
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 PA / _TLSEncryptedContent
+Ether / IP / TCP / TLS 18.238.238.44:443 > 192.168.56.101:47926 / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP / TLS 18.238.238.44:443 > 192.168.56.101:47926 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 108.138.94.59:443 > 192.168.56.101:54642 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:47926 > 18.238.238.44:443 / TLS / TLS Application Data
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / Padding
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 A / _TLSEncryptedContent
+Ether / IP / TCP 18.238.238.44:https > 192.168.56.101:47926 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP / TLS 18.238.238.44:443 > 192.168.56.101:47926 / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+Ether / IP / TCP 192.168.56.101:47926 > 18.238.238.44:https A / Padding
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / TCP / TLS 54.149.247.18:443 > 192.168.56.101:34056 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 54.149.247.18:https > 192.168.56.101:34056 FA
+Ether / IP / TCP 192.168.56.101:34056 > 54.149.247.18:https FA / Padding
+Ether / IP / TCP 54.149.247.18:https > 192.168.56.101:34056 A
+here: scapy
+DNS Qry b'www.npr.org.'
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+here: scapy
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+here: scapy
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+here: scapy
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS Qry b'www.npr.org.'
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 108.138.94.59:443 > 192.168.56.101:54642 / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP / TLS 108.138.94.59:443 > 192.168.56.101:54642 / TLS / TLS Application Data / Raw
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 PA / _TLSEncryptedContent
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 108.138.94.59:443 > 192.168.56.101:54642 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 192.168.56.101:54642 > 108.138.94.59:443 / TLS / TLS Application Data
+Ether / IP / TCP 108.138.94.59:https > 192.168.56.101:54642 A
+Ether / IP / TCP / TLS 108.138.94.59:443 > 192.168.56.101:54642 / TLS / TLS Application Data / TLS / TLS Application Data
+Ether / IP / TCP 192.168.56.101:54642 > 108.138.94.59:https A / Padding
+here: scapy
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+here: scapy
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+Ether / ARP who has 192.168.56.101 says 192.168.56.102
+Ether / ARP is at 08:00:27:ef:a0:7e says 192.168.56.101 / Padding
+here: scapy
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.wikipedia.org.'
+DNS Qry b'www.wikipedia.org.'
+DNS query: www.wikipedia.org
+Attempted access of restricted site: wikipedia.org
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+here: scapy
+Ether / IP / UDP / DNS Qry b'www.npr.org.'
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org
+here: scapy
+DNS Qry b'www.npr.org.'
+DNS query: www.npr.org
+Attempted access of restricted site: npr.org

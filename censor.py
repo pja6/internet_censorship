@@ -18,7 +18,7 @@ class CensorMachine():
         self.censor_dict={}        
         self.censor_rules=[
             self.keyword_censor,
-            self.domain_censor,
+            self.dns_censor,
             self.protocol_censor
             ]
 
@@ -119,7 +119,7 @@ class CensorMachine():
             
             for url in self.domain_list:
                 if url in query:
-                    print(f"Attempted access of restricted site{url}")
+                    print(f"Attempted access of restricted site: {url}")
                     #DNS layer too early to use resets
                     #no tcp connection and dns uses ephemeral ports so would never escalate
                     #self.tuple_ban(pkt)
@@ -160,7 +160,7 @@ class CensorMachine():
 
     
        http_queue.bind(q1, self.keyword_censor)
-       https_queue.bind(q2, self.domain_censor)
+       https_queue.bind(q2, self.dns_censor)
        ssh_queue.bind(q3, self.protocol_censor)
 
        try:
