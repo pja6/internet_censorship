@@ -6,7 +6,7 @@ from netfilterqueue import NetfilterQueue as nfq
 import time
 import threading
 
-
+#censor class to hold class attributes
 class CensorMachine():
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -62,7 +62,7 @@ class CensorMachine():
                del self.censor_dict[t_tuple]
            del self.censor_dict[f_tuple]
            
-    
+    #keyword censor - checks raw payload against list of banned words
     def keyword_censor(self, nfq_pkt):
         print("here: keyword")
         pkt = self.scapy_pkt(nfq_pkt)
@@ -92,6 +92,7 @@ class CensorMachine():
             print("Permissible packet: forwarded")
             nfq_pkt.accept()
     
+    
     #create new RST packets    
     def create_rst(self, pkt):
         print("here: rst")
@@ -106,7 +107,7 @@ class CensorMachine():
 
         return server_pkt, client_pkt
     
-
+    #dns censorship policy - checks query against list of domains
     def dns_censor(self, nfq_pkt):
         
         pkt=self.scapy_pkt(nfq_pkt)
@@ -152,13 +153,14 @@ class CensorMachine():
             
         nfq_pkt.accept()
     
+    #create the nfq binds to policy methods
     def nfq_pipeline(self, q1, q2, q3):
        print("here: pipeline")
        http_queue = nfq()
        dns_queue = nfq()
        ssh_queue = nfq()
 
-    
+        #bind to queue number and policy
        http_queue.bind(q1, self.keyword_censor)
        dns_queue.bind(q2, self.dns_censor)
        ssh_queue.bind(q3, self.protocol_censor)
@@ -168,7 +170,7 @@ class CensorMachine():
            threading.Thread(target=dns_queue.run),
            threading.Thread(target=ssh_queue.run)
        ]
-
+        # daemon true = stop all together
        try:
            for t in threads:
                t.daemon=True
@@ -181,6 +183,7 @@ class CensorMachine():
            dns_queue.unbind()
            ssh_queue.unbind()
            
+    #async callback for logging traffic
     def log_packet(self, packet):
         print(packet.summary())
 

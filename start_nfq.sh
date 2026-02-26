@@ -1,12 +1,15 @@
 #!/bin/bash
 
+echo "set port forwarding: sudo sysctl -w net.ipv4.ip_forward=1"
+
 #create alice_routing table
-#sudo nft add table nat 2>/dev/null
+sudo nft add table nat 2>/dev/null
+echo "alice nat table created"
 
 #add chain to alice_routing table and masquerade rule
-#sudo nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; } 2>/dev/null
-#sudo nft add rule ip nat POSTROUTING oifname "enp0s8" masquerade 2>/dev/null
-
+sudo nft add chain ip nat POSTROUTING { type nat hook postrouting priority 100 \; } 2>/dev/null
+sudo nft add rule ip nat POSTROUTING oifname "enp0s8" masquerade 2>/dev/null
+echo "alice chain and rule created"
 
 
 #create censor table 
